@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cybex Recon Engine – DNS resolution, simulated service exposure assessment, and security analysis reporting dashboard." />
+  <title>Cybex Recon Engine</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}" />
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=1.0.2" />
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="cre-header">
+    <div class="container-fluid px-4">
+      <div class="d-flex align-items-center gap-3">
+        <div class="cre-logo-wrap">
+          <i class="bi bi-shield-shaded cre-logo-icon"></i>
+        </div>
+        <div>
+          <h1 class="cre-brand mb-0">Cybex <span class="cre-brand-accent">Recon</span> Engine</h1>
+          <p class="cre-brand-sub mb-0">DNS · Simulated Service Exposure · Security Analysis Platform</p>
+        </div>
+        <div class="ms-auto d-flex align-items-center gap-2">
+          <span class="cre-status-dot"></span>
+          <span class="cre-status-label">ONLINE</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MODULE NAV TABS ===== -->
+  <nav class="cre-module-nav">
+    <div class="container-fluid px-4">
+      <ul class="nav cre-nav-tabs" id="moduleTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link cre-nav-link active" id="module1-tab"
+            data-bs-toggle="tab" data-bs-target="#module1"
+            type="button" role="tab" aria-controls="module1" aria-selected="true">
+            <i class="bi bi-radar me-2"></i>Module 1 <span class="cre-tab-sub">· DNS Resolution</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link cre-nav-link" id="module2-tab"
+            data-bs-toggle="tab" data-bs-target="#module2"
+            type="button" role="tab" aria-controls="module2" aria-selected="false">
+            <i class="bi bi-shield-exclamation me-2"></i>Module 2 <span class="cre-tab-sub">· Simulated Service Exposure</span>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link cre-nav-link" id="module3-tab"
+            data-bs-toggle="tab" data-bs-target="#module3"
+            type="button" role="tab" aria-controls="module3" aria-selected="false">
+            <i class="bi bi-file-earmark-bar-graph me-2"></i>Module 3 <span class="cre-tab-sub">· Simulated Report</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN ===== -->
+  <main class="container-fluid px-4 py-4 flex-grow-1">
+    <div class="tab-content" id="moduleTabContent">
+
+      <!-- ======================================================
+           MODULE 1 TAB — DNS Resolution
+           ====================================================== -->
+      <div class="tab-pane fade show active" id="module1" role="tabpanel" aria-labelledby="module1-tab">
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-12 col-lg-8">
+            <div class="cre-card cre-input-card">
+              <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-crosshair2 cre-icon-blue"></i>
+                <span class="cre-card-title">Target Acquisition</span>
+              </div>
+              <div class="input-group cre-input-group">
+                <span class="input-group-text cre-input-prefix"><i class="bi bi-globe2"></i></span>
+                <input id="targetInput" type="text" class="form-control cre-input"
+                  placeholder="Enter domain name or IPv4 address (e.g. example.com or 93.184.216.34)"
+                  autocomplete="off" spellcheck="false" />
+                <button id="resolveBtn" class="btn cre-btn-primary" type="button">
+                  <span id="btnText"><i class="bi bi-radar me-1"></i> Resolve Target</span>
+                  <span id="btnSpinner" class="d-none">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Resolving…
+                  </span>
+                </button>
+              </div>
+              <div id="alertArea" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="resultsPanel" class="d-none">
+          <!-- Summary cards row -->
+          <div class="row g-3 mb-4 justify-content-center" id="summaryCards">
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="cre-card cre-summary-card h-100">
+                <div class="cre-summary-icon cre-icon-bg-blue"><i class="bi bi-bullseye"></i></div>
+                <div class="cre-summary-label">Target</div>
+                <div id="cardTarget" class="cre-summary-value cre-mono">—</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="cre-card cre-summary-card h-100">
+                <div class="cre-summary-icon cre-icon-bg-green"><i class="bi bi-hdd-network"></i></div>
+                <div class="cre-summary-label">Resolved IPv4</div>
+                <div id="cardIP" class="cre-summary-value cre-mono">—</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="cre-card cre-summary-card h-100">
+                <div class="cre-summary-icon cre-icon-bg-purple"><i class="bi bi-diagram-3"></i></div>
+                <div class="cre-summary-label">DNS Records</div>
+                <div id="cardDNS" class="cre-summary-value">—</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-3">
+              <div class="cre-card cre-summary-card h-100">
+                <div class="cre-summary-icon cre-icon-bg-status" id="statusIconBg">
+                  <i class="bi bi-activity" id="statusIcon"></i>
+                </div>
+                <div class="cre-summary-label">Resolution Status</div>
+                <div id="cardStatus" class="cre-summary-value">—</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 1: A records + MX records -->
+          <div class="row g-3 mb-3 justify-content-center">
+            <div class="col-12 col-lg-6">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-server cre-icon-blue"></i>
+                  <span class="cre-card-title">A Records</span>
+                  <span id="aRecordsBadge" class="badge cre-badge ms-auto">0</span>
+                </div>
+                <div id="aRecordsList" class="cre-record-list">
+                  <span class="cre-empty-state">No A records found.</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-envelope-at cre-icon-green"></i>
+                  <span class="cre-card-title">MX Records</span>
+                  <span id="mxRecordsBadge" class="badge cre-badge ms-auto">0</span>
+                </div>
+                <div id="mxRecordsList" class="cre-record-list">
+                  <span class="cre-empty-state">No MX records found.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: AAAA records + NS records -->
+          <div class="row g-3 mb-3 justify-content-center">
+            <div class="col-12 col-lg-6">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-hdd-stack cre-icon-purple"></i>
+                  <span class="cre-card-title">AAAA Records <span class="cre-tag-ipv6">IPv6</span></span>
+                  <span id="aaaaRecordsBadge" class="badge cre-badge ms-auto">0</span>
+                </div>
+                <div id="aaaaRecordsList" class="cre-record-list">
+                  <span class="cre-empty-state">No AAAA records found.</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-diagram-2 cre-icon-blue"></i>
+                  <span class="cre-card-title">NS Records</span>
+                  <span id="nsRecordsBadge" class="badge cre-badge ms-auto">0</span>
+                </div>
+                <div id="nsRecordsList" class="cre-record-list">
+                  <span class="cre-empty-state">No NS records found.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: TXT records (full width) -->
+          <div class="row g-3 mb-3 justify-content-center">
+            <div class="col-12">
+              <div class="cre-card">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-file-text cre-icon-yellow"></i>
+                  <span class="cre-card-title">TXT Records</span>
+                  <span id="txtRecordsBadge" class="badge cre-badge ms-auto">0</span>
+                </div>
+                <div id="txtRecordsList" class="cre-record-list">
+                  <span class="cre-empty-state">No TXT records found.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 4: CNAME + SOA -->
+          <div class="row g-3 mb-3 justify-content-center">
+            <div class="col-12 col-lg-6">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-arrow-right-circle cre-icon-green"></i>
+                  <span class="cre-card-title">CNAME Record</span>
+                </div>
+                <div id="cnameRecord" class="cre-record-list">
+                  <span class="cre-empty-state">No CNAME record found.</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-info-circle cre-icon-purple"></i>
+                  <span class="cre-card-title">SOA Record</span>
+                </div>
+                <div id="soaRecord" class="cre-record-list">
+                  <span class="cre-empty-state">No SOA record found.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 5: RDAP Ownership -->
+          <div class="row g-3 mb-3 justify-content-center">
+            <div class="col-12">
+              <div class="cre-card">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-building cre-icon-teal"></i>
+                  <span class="cre-card-title">RDAP / IP Ownership</span>
+                  <span class="cre-edu-badge ms-auto"><i class="bi bi-eye-fill me-1"></i>Passive Lookup</span>
+                </div>
+                <div id="rdapInfo" class="cre-record-list">
+                  <span class="cre-empty-state">No RDAP data available.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- /module1 -->
+
+
+      <!-- ======================================================
+           MODULE 2 TAB — Real Local Machine Service Assessment
+           ====================================================== -->
+      <div class="tab-pane fade" id="module2" role="tabpanel" aria-labelledby="module2-tab">
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-12 col-lg-9">
+            <div class="cre-card cre-input-card cre-input-card--m2">
+              <div class="cre-card-header d-flex align-items-center gap-2 mb-1">
+                <i class="bi bi-cpu-fill cre-icon-orange"></i>
+                <span class="cre-card-title">Local Machine Service Assessment</span>
+                <span id="m2ScanModeBadge" class="cre-edu-badge ms-auto"><i class="bi bi-shield-check me-1"></i>Local Machine Scan</span>
+              </div>
+
+              <!-- Local target notice -->
+              <div class="cre-auth-notice mb-3">
+                <i class="bi bi-shield-lock-fill cre-icon-blue me-2"></i>
+                <span>This module performs TCP service checks only on addresses assigned to the computer running Cybex Recon Engine.</span>
+              </div>
+
+              <div class="row g-2 mb-2 align-items-center">
+                <div class="col-12 col-md-6">
+                  <label for="scenarioSelect" class="form-label font-mono text-muted mb-1" style="font-size: 0.75rem;">SELECT LOCAL TARGET ADDRESS</label>
+                  <div class="input-group">
+                    <div class="cre-select-wrap flex-grow-1">
+                      <i class="bi bi-hdd-network-fill cre-select-icon"></i>
+                      <select id="scenarioSelect" class="cre-select">
+                        <option value="">Discovering local interfaces…</option>
+                      </select>
+                    </div>
+                    <button id="refreshTargetsBtn" class="btn btn-outline-secondary font-mono" type="button" title="Refresh Local Addresses">
+                      <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Hidden input for programmatic target binding -->
+                <input id="assessTarget" type="hidden" value="127.0.0.1" />
+                <input type="checkbox" id="authCheckbox" checked style="display:none;" />
+
+                <div class="col-12 col-md-6 d-flex align-items-end pt-3 pt-md-0">
+                  <button id="assessBtn" class="btn cre-btn-orange w-100" type="button">
+                    <span id="assessBtnText"><i class="bi bi-play-circle-fill me-1"></i>Run Local Assessment</span>
+                    <span id="assessBtnSpinner" class="d-none">
+                      <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Checking local services... Please wait.
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <div id="assessAlertArea" class="mt-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="assessPanel" class="d-none">
+          <div class="row justify-content-center mb-3">
+            <div class="col-12 col-lg-9">
+              <div class="cre-report-header">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                  <div>
+                    <div class="cre-report-label">Target Address</div>
+                    <div id="reportTarget" class="cre-report-value cre-mono">—</div>
+                  </div>
+                  <div class="cre-report-divider"></div>
+                  <div>
+                    <div class="cre-report-label">Assessment Type</div>
+                    <div id="reportScenario" class="cre-report-value">—</div>
+                  </div>
+                  <div class="cre-report-divider"></div>
+                  <div>
+                    <div class="cre-report-label">Timestamp</div>
+                    <div id="reportTimestamp" class="cre-report-value cre-mono">—</div>
+                  </div>
+                  <div class="cre-report-divider"></div>
+                  <div>
+                    <div class="cre-report-label">Scan Mode</div>
+                    <div id="reportScanType" class="cre-report-value">—</div>
+                  </div>
+                  <!-- Analyse button in header -->
+                  <div class="ms-auto">
+                    <button id="analyseBtn" class="btn cre-btn-teal" type="button">
+                      <i class="bi bi-bar-chart-line me-1"></i> Risk Analysis &amp; Report
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4 justify-content-center" id="assessSummaryCards">
+            <div class="col-6 col-sm-3">
+              <div class="cre-card cre-summary-card h-100 cre-assess-card">
+                <div class="cre-summary-icon cre-icon-bg-blue"><i class="bi bi-list-check"></i></div>
+                <div class="cre-summary-label">Total Ports Checked</div>
+                <div id="sumTotal" class="cre-summary-value">—</div>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="cre-card cre-summary-card h-100 cre-assess-card">
+                <div class="cre-summary-icon cre-icon-bg-green"><i class="bi bi-wifi"></i></div>
+                <div class="cre-summary-label">Open Ports</div>
+                <div id="sumOpen" class="cre-summary-value text-success">—</div>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="cre-card cre-summary-card h-100 cre-assess-card">
+                <div class="cre-summary-icon cre-icon-bg-purple"><i class="bi bi-wifi-off"></i></div>
+                <div class="cre-summary-label">Closed Ports</div>
+                <div id="sumClosed" class="cre-summary-value text-secondary">—</div>
+              </div>
+            </div>
+            <div class="col-6 col-sm-3">
+              <div class="cre-card cre-summary-card h-100 cre-assess-card">
+                <div class="cre-summary-icon cre-icon-bg-teal"><i class="bi bi-clock-history"></i></div>
+                <div class="cre-summary-label">Duration</div>
+                <div id="sumHighRisk" class="cre-summary-value text-info">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center mb-3">
+            <div class="col-12 col-lg-9">
+              <div class="cre-filters d-flex flex-wrap align-items-center gap-2">
+                <span class="cre-filters-label"><i class="bi bi-funnel-fill me-1"></i>Filter Status:</span>
+                <div class="cre-filter-btn-group" id="riskFilterGroup">
+                  <button class="cre-filter-btn active" data-risk="all">All Ports</button>
+                  <button class="cre-filter-btn" data-risk="open"><span class="cre-dot cre-dot-green"></span>Open Only</button>
+                  <button class="cre-filter-btn" data-risk="closed"><span class="cre-dot cre-dot-secondary"></span>Closed Only</button>
+                </div>
+                <div class="ms-auto cre-search-wrap">
+                  <i class="bi bi-search cre-search-icon"></i>
+                  <input id="serviceSearch" type="text" class="cre-search-input" placeholder="Search port/service…" autocomplete="off" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+              <div class="cre-card cre-table-card p-0">
+                <div class="table-responsive">
+                  <table class="table cre-table mb-0" id="servicesTable">
+                    <thead>
+                      <tr>
+                        <th class="col-port">Port</th>
+                        <th class="col-proto">Protocol</th>
+                        <th class="col-service">Service</th>
+                        <th class="col-source" title="How the service was detected">Detection</th>
+                        <th class="col-status">Status</th>
+                        <th class="col-banner">Details</th>
+                        <th class="col-evidence">Evidence</th>
+                      </tr>
+                    </thead>
+                    <tbody id="servicesTableBody">
+                      <tr><td colspan="7" class="text-center cre-empty-state py-4">No local assessment has been run yet. Select a local address and start an assessment.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="cre-table-footer d-flex align-items-center justify-content-between px-3 py-2">
+                  <span id="tableRowCount" class="cre-table-count">0 services</span>
+                  <span class="cre-table-edu-note">
+                    <i class="bi bi-shield-check me-1 cre-icon-blue"></i>
+                    Real local TCP socket assessment. Results reflect real-time network connectivity.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /module2 -->
+
+
+      <!-- ======================================================
+           MODULE 3 TAB — Simulated Security Analysis & Reporting
+           ====================================================== -->
+      <div class="tab-pane fade" id="module3" role="tabpanel" aria-labelledby="module3-tab">
+
+        <!-- ── M3 Alert area for error / status messages ── -->
+        <div class="row justify-content-center mb-3">
+          <div class="col-12 col-lg-8" id="m3AlertArea"></div>
+        </div>
+
+        <!-- ── Loading / In-Progress State ── -->
+        <div id="m3Loading" class="row justify-content-center d-none">
+          <div class="col-12 col-lg-7">
+            <div class="cre-placeholder-card cre-loading-card">
+              <div class="cre-radar-spinner mb-3" id="m3LoadingIcon">
+                <span class="spinner-border text-teal" style="width: 3rem; height: 3rem;" role="status"></span>
+              </div>
+              <h2 class="cre-placeholder-title" id="m3LoadingTitle">Generating Security Analysis...</h2>
+              <p class="cre-placeholder-desc" id="m3LoadingDesc">
+                Correlating exposure findings, computing risk score, and querying vulnerability intelligence.
+              </p>
+              <div id="m3LoadingAction" class="d-none">
+                <button class="btn cre-btn-teal" onclick="switchToModule2()">
+                  <i class="bi bi-eye me-2"></i>View Live Scan in Module 2
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── No-data placeholder (shown until assessment has been run) ── -->
+        <div id="m3Placeholder" class="row justify-content-center">
+          <div class="col-12 col-lg-7">
+            <div class="cre-placeholder-card">
+              <i class="bi bi-bar-chart-line-fill cre-placeholder-icon"></i>
+              <h2 class="cre-placeholder-title">No Security Analysis Yet</h2>
+              <p class="cre-placeholder-desc">
+                Run a <strong>Module 2</strong> local service assessment first, then click the
+                <strong>Analyse &amp; Report</strong> button to generate a full
+                security analysis with risk scoring, findings, and recommendations.
+              </p>
+              <button class="btn cre-btn-teal" onclick="switchToModule2()">
+                <i class="bi bi-shield-exclamation me-2"></i>Go to Module 2
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Analysis results (hidden until data arrives) ── -->
+        <div id="m3Panel" class="d-none">
+
+          <!-- Analysis header -->
+          <div class="row justify-content-center mb-4">
+            <div class="col-12 col-lg-10">
+              <div class="cre-m3-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                  <div class="cre-m3-module-label">
+                    <i class="bi bi-file-earmark-bar-graph me-1"></i>Simulated Security Analysis Report
+                  </div>
+                  <div class="d-flex flex-wrap gap-3 mt-2">
+                    <div>
+                      <div class="cre-report-label">Target</div>
+                      <div id="m3Target" class="cre-report-value cre-mono">—</div>
+                    </div>
+                    <div class="cre-report-divider"></div>
+                    <div>
+                      <div class="cre-report-label">Lab Scenario</div>
+                      <div id="m3Scenario" class="cre-report-value">—</div>
+                    </div>
+                    <div class="cre-report-divider"></div>
+                    <div>
+                      <div class="cre-report-label">Analysis Date</div>
+                      <div id="m3Date" class="cre-report-value cre-mono">—</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Download buttons -->
+                <div class="d-flex gap-2">
+                  <button id="downloadTxtBtn" class="btn cre-btn-dl cre-btn-dl--txt" type="button">
+                    <i class="bi bi-file-text me-1"></i>Download TXT Report
+                  </button>
+                  <button id="downloadJsonBtn" class="btn cre-btn-dl cre-btn-dl--json" type="button">
+                    <i class="bi bi-filetype-json me-1"></i>Download JSON Report
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Row 1: Risk score + distribution + stats ── -->
+          <div class="row g-3 mb-4 justify-content-center">
+
+            <!-- Risk Score Gauge card -->
+            <div class="col-12 col-md-4">
+              <div class="cre-card cre-m3-risk-card h-100 text-center">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-speedometer2 cre-icon-teal"></i>
+                  <span class="cre-card-title">Simulated Risk Score</span>
+                </div>
+                <div class="cre-risk-score-wrap">
+                  <div id="m3RiskScore" class="cre-risk-score-num">—</div>
+                  <div class="cre-risk-score-denom">/100</div>
+                </div>
+                <div id="m3RiskLabel" class="cre-risk-label mt-2">—</div>
+                <!-- Gauge bar -->
+                <div class="cre-gauge-wrap mt-3">
+                  <div class="progress cre-gauge-bar">
+                    <div id="m3GaugeBar" class="progress-bar" role="progressbar"
+                      style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div class="cre-gauge-labels">
+                    <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Risk Distribution card -->
+            <div class="col-12 col-md-4">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-pie-chart-fill cre-icon-teal"></i>
+                  <span class="cre-card-title">Score Breakdown</span>
+                </div>
+                <div id="m3Distribution" class="cre-dist-list">
+                  <!-- Filled by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats card -->
+            <div class="col-12 col-md-4">
+              <div class="cre-card h-100">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-3">
+                  <i class="bi bi-clipboard-data-fill cre-icon-teal"></i>
+                  <span class="cre-card-title">Assessment Stats</span>
+                </div>
+                <div class="cre-stats-list">
+                  <div class="cre-stat-row">
+                    <span class="cre-stat-label"><i class="bi bi-list-task me-2"></i>Total Services</span>
+                    <span id="m3StatTotal" class="cre-stat-val">—</span>
+                  </div>
+                  <div class="cre-stat-row">
+                    <span class="cre-stat-label"><i class="bi bi-wifi me-2 text-success"></i>Open (simulated)</span>
+                    <span id="m3StatOpen" class="cre-stat-val text-success">—</span>
+                  </div>
+                  <div class="cre-stat-row">
+                    <span class="cre-stat-label"><i class="bi bi-flag-fill me-2 text-danger"></i>Exposure Findings</span>
+                    <span id="m3StatFindings" class="cre-stat-val text-danger">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /row 1 -->
+
+          <!-- ── Executive Summary ── -->
+          <div class="row g-3 mb-4 justify-content-center">
+            <div class="col-12 col-lg-10">
+              <div class="cre-card cre-exec-card">
+                <div class="cre-card-header d-flex align-items-center gap-2 mb-2">
+                  <i class="bi bi-journal-text cre-icon-teal"></i>
+                  <span class="cre-card-title">Executive Summary</span>
+                </div>
+                <p id="m3ExecSummary" class="cre-exec-text mb-0">—</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Findings Panel ── -->
+          <div class="row g-3 justify-content-center mb-4">
+            <div class="col-12 col-lg-10">
+              <div class="cre-card p-0">
+                <div class="cre-card-header d-flex align-items-center gap-2 px-4 pt-3 pb-2">
+                  <i class="bi bi-bug-fill cre-icon-red"></i>
+                  <span class="cre-card-title">Security Findings &amp; Hardening Recommendations</span>
+                  <span id="m3FindingsBadge" class="badge cre-badge ms-auto">0</span>
+                </div>
+
+                <!-- Finding filter buttons -->
+                <div class="px-4 pb-2 d-flex flex-wrap gap-2" id="findingFilterGroup">
+                  <button class="cre-filter-btn active" data-sev="all">All</button>
+                  <button class="cre-filter-btn" data-sev="critical"><span class="cre-dot cre-dot-critical"></span>Critical</button>
+                  <button class="cre-filter-btn" data-sev="high"><span class="cre-dot cre-dot-high"></span>High</button>
+                  <button class="cre-filter-btn" data-sev="medium"><span class="cre-dot cre-dot-medium"></span>Medium</button>
+                  <button class="cre-filter-btn" data-sev="low"><span class="cre-dot cre-dot-low"></span>Low</button>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table cre-table mb-0" id="findingsTable">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Service</th>
+                        <th>Port</th>
+                        <th>Severity</th>
+                        <th>CVE / Ref</th>
+                        <th>Data Source</th>
+                        <th>Banner</th>
+                        <th>Vulnerability Context</th>
+                        <th>Hardening Recommendation</th>
+                      </tr>
+                    </thead>
+                    <tbody id="findingsTableBody">
+                      <tr><td colspan="9" class="text-center cre-empty-state py-4">No findings yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="cre-table-footer d-flex align-items-center justify-content-between px-4 py-2">
+                  <span id="findingsRowCount" class="cre-table-count">0 findings</span>
+                  <span class="cre-table-edu-note">
+                    <i class="bi bi-shield-lock me-1 cre-icon-teal"></i>
+                    Live findings enriched with OSV.dev · Local rules fallback for unmapped services
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /m3Panel -->
+
+      </div><!-- /module3 -->
+
+    </div><!-- /tab-content -->
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="cre-footer">
+    <div class="container-fluid px-4">
+      <span class="cre-footer-text">
+        <i class="bi bi-shield-lock-fill me-1 cre-icon-blue"></i>
+        Cybex Recon Engine &copy; 2026 &mdash; Module 1: DNS · Module 2: Simulated Assessment · Module 3: Simulated Analysis &amp; Reporting
+      </span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="{{ url_for('static', filename='js/app.js') }}?v=1.0.2"></script>
+</body>
+</html>

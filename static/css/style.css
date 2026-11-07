@@ -1,0 +1,1679 @@
+/* ==========================================================
+   Cybex Recon Engine – Module 1 & 2  |  style.css
+   Dark cybersecurity dashboard        |  Blue/Green/Orange accents
+   ========================================================== */
+
+/* ---------- CSS custom properties (design tokens) ---------- */
+:root {
+  --cre-bg:           #0a0d14;
+  --cre-surface:      #111827;
+  --cre-surface-2:    #1a2236;
+  --cre-border:       #1e2d45;
+  --cre-border-light: #2a3f5f;
+
+  --cre-blue:         #3b82f6;
+  --cre-blue-glow:    rgba(59, 130, 246, 0.25);
+  --cre-blue-dark:    #1d4ed8;
+
+  --cre-green:        #22c55e;
+  --cre-green-glow:   rgba(34, 197, 94, 0.20);
+
+  --cre-purple:       #a855f7;
+  --cre-purple-glow:  rgba(168, 85, 247, 0.20);
+
+  --cre-red:          #ef4444;
+  --cre-red-glow:     rgba(239, 68, 68, 0.20);
+
+  --cre-yellow:       #f59e0b;
+
+  --cre-text:         #e2e8f0;
+  --cre-text-muted:   #64748b;
+  --cre-text-dim:     #94a3b8;
+
+  --cre-radius:       12px;
+  --cre-radius-sm:    8px;
+  --cre-transition:   0.25s ease;
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--cre-bg);
+  color: var(--cre-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  /* subtle grid pattern */
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ---------- Monospace helper ---------- */
+.cre-mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-size: 0.875rem;
+  letter-spacing: 0.03em;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.cre-header {
+  background: linear-gradient(135deg, #0d1523 0%, #111827 60%, #0a0d14 100%);
+  border-bottom: 1px solid var(--cre-border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo circle */
+.cre-logo-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cre-blue-dark), var(--cre-blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 16px var(--cre-blue-glow);
+  flex-shrink: 0;
+}
+
+.cre-logo-icon {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.cre-brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--cre-text);
+}
+
+.cre-brand-accent {
+  color: var(--cre-blue);
+}
+
+.cre-brand-sub {
+  font-size: 0.7rem;
+  color: var(--cre-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Online status indicator */
+.cre-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cre-green);
+  box-shadow: 0 0 8px var(--cre-green);
+  animation: cre-pulse 2s infinite;
+}
+
+.cre-status-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--cre-green);
+}
+
+@keyframes cre-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ============================================================
+   CARDS (base)
+   ============================================================ */
+.cre-card {
+  background: var(--cre-surface);
+  border: 1px solid var(--cre-border);
+  border-radius: var(--cre-radius);
+  padding: 1.25rem 1.5rem;
+  transition: border-color var(--cre-transition), box-shadow var(--cre-transition);
+}
+
+.cre-card:hover {
+  border-color: var(--cre-border-light);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Input card gets a blue top-border accent */
+.cre-input-card {
+  border-top: 2px solid var(--cre-blue);
+  box-shadow: 0 0 32px rgba(59, 130, 246, 0.08);
+}
+
+.cre-card-header {
+  /* flex utility already handled by Bootstrap d-flex */
+}
+
+.cre-card-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cre-text-dim);
+}
+
+/* ============================================================
+   INPUT
+   ============================================================ */
+.cre-input-group {
+  border-radius: var(--cre-radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--cre-border);
+  transition: border-color var(--cre-transition), box-shadow var(--cre-transition);
+}
+
+.cre-input-group:focus-within {
+  border-color: var(--cre-blue);
+  box-shadow: 0 0 0 3px var(--cre-blue-glow);
+}
+
+.cre-input-prefix {
+  background: var(--cre-surface-2);
+  border: none;
+  color: var(--cre-blue);
+  font-size: 1.1rem;
+  padding-left: 1rem;
+  padding-right: 0.75rem;
+}
+
+.cre-input {
+  background: var(--cre-surface-2) !important;
+  border: none !important;
+  color: var(--cre-text) !important;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.cre-input::placeholder {
+  color: var(--cre-text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+.cre-btn-primary {
+  background: linear-gradient(135deg, var(--cre-blue-dark), var(--cre-blue));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  padding: 0.75rem 1.5rem;
+  white-space: nowrap;
+  transition: opacity var(--cre-transition), box-shadow var(--cre-transition), transform 0.1s ease;
+}
+
+.cre-btn-primary:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 4px 16px var(--cre-blue-glow);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.cre-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cre-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #1e3a6e, #2563eb);
+}
+
+/* ============================================================
+   SUMMARY CARDS
+   ============================================================ */
+.cre-summary-card {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--cre-transition), box-shadow var(--cre-transition), border-color var(--cre-transition);
+}
+
+.cre-summary-card:hover {
+  transform: translateY(-3px);
+}
+
+/* animated entry */
+.cre-summary-card.cre-animate-in {
+  animation: cre-card-in 0.4s ease both;
+}
+
+@keyframes cre-card-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cre-summary-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin: 0 auto 0.75rem;
+}
+
+.cre-icon-bg-blue   { background: var(--cre-blue-glow);   color: var(--cre-blue);   }
+.cre-icon-bg-green  { background: var(--cre-green-glow);  color: var(--cre-green);  }
+.cre-icon-bg-purple { background: var(--cre-purple-glow); color: var(--cre-purple); }
+.cre-icon-bg-status { background: var(--cre-green-glow);  color: var(--cre-green);  }
+.cre-icon-bg-red    { background: var(--cre-red-glow);    color: var(--cre-red);    }
+.cre-icon-bg-yellow { background: rgba(245,158,11,.18);   color: var(--cre-yellow); }
+
+.cre-summary-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cre-text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.cre-summary-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cre-text);
+  word-break: break-all;
+}
+
+/* ============================================================
+   ICON COLOUR HELPERS
+   ============================================================ */
+.cre-icon-blue   { color: var(--cre-blue); }
+.cre-icon-green  { color: var(--cre-green); }
+.cre-icon-purple { color: var(--cre-purple); }
+.cre-icon-red    { color: var(--cre-red); }
+
+/* ============================================================
+   RECORD LIST (A / MX panels)
+   ============================================================ */
+.cre-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cre-border-light) transparent;
+}
+
+.cre-record-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--cre-surface-2);
+  border: 1px solid var(--cre-border);
+  border-radius: var(--cre-radius-sm);
+  padding: 0.55rem 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--cre-text);
+  transition: border-color var(--cre-transition), background var(--cre-transition);
+  animation: cre-card-in 0.3s ease both;
+}
+
+.cre-record-item:hover {
+  border-color: var(--cre-border-light);
+  background: #1e2d45;
+}
+
+.cre-record-item .cre-record-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.cre-record-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.cre-tag-a  { background: var(--cre-blue-glow);  color: var(--cre-blue);  }
+.cre-tag-mx { background: var(--cre-green-glow); color: var(--cre-green); }
+
+.cre-mx-pref {
+  font-size: 0.7rem;
+  color: var(--cre-text-muted);
+  margin-left: 0.25rem;
+}
+
+.cre-empty-state {
+  color: var(--cre-text-muted);
+  font-size: 0.82rem;
+  font-style: italic;
+  padding: 0.5rem 0;
+}
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+.cre-badge {
+  background: var(--cre-blue-glow) !important;
+  color: var(--cre-blue) !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+/* ============================================================
+   ALERT OVERRIDES
+   ============================================================ */
+#alertArea .alert {
+  background: rgba(239, 68, 68, 0.10);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--cre-radius-sm);
+  color: #fca5a5;
+  font-size: 0.875rem;
+  animation: cre-card-in 0.3s ease both;
+}
+
+#alertArea .alert-success {
+  background: rgba(34, 197, 94, 0.10);
+  border-color: rgba(34, 197, 94, 0.30);
+  color: #86efac;
+}
+
+#alertArea .alert-warning {
+  background: rgba(245, 158, 11, 0.10);
+  border-color: rgba(245, 158, 11, 0.30);
+  color: #fcd34d;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.cre-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--cre-border);
+  background: var(--cre-surface);
+  padding: 0.75rem 0;
+}
+
+.cre-footer-text {
+  font-size: 0.75rem;
+  color: var(--cre-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   SPINNER OVERRIDE
+   ============================================================ */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15em;
+}
+
+/* ============================================================
+   RESPONSIVE TWEAKS
+   ============================================================ */
+@media (max-width: 576px) {
+  .cre-brand       { font-size: 1.1rem; }
+  .cre-brand-sub   { display: none; }
+  .cre-header      { padding: 0.65rem 0; }
+  .cre-logo-wrap   { width: 38px; height: 38px; }
+  .cre-logo-icon   { font-size: 1.1rem; }
+  .cre-input       { font-size: 0.8rem; }
+  .cre-btn-primary { font-size: 0.8rem; padding: 0.65rem 1rem; }
+}
+
+/* scrollbar styling (webkit) */
+.cre-record-list::-webkit-scrollbar        { width: 4px; }
+.cre-record-list::-webkit-scrollbar-track  { background: transparent; }
+.cre-record-list::-webkit-scrollbar-thumb  { background: var(--cre-border-light); border-radius: 4px; }
+
+
+/* ==========================================================
+   MODULE 2 – Service Assessment
+   ========================================================== */
+
+/* ---------- Additional design tokens ---------- */
+:root {
+  --cre-orange:      #f97316;
+  --cre-orange-glow: rgba(249, 115, 22, 0.22);
+  --cre-orange-dark: #c2410c;
+
+  --cre-critical:     #dc2626;
+  --cre-critical-glow: rgba(220, 38, 38, 0.22);
+}
+
+/* ============================================================
+   MODULE NAV TABS
+   ============================================================ */
+.cre-module-nav {
+  background: var(--cre-surface);
+  border-bottom: 1px solid var(--cre-border);
+  padding: 0 0;
+}
+
+.cre-nav-tabs {
+  gap: 0;
+  border-bottom: none;
+}
+
+.cre-nav-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--cre-text-muted);
+  border: none !important;
+  border-bottom: 3px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 0.85rem 1.5rem;
+  transition: color var(--cre-transition), border-color var(--cre-transition), background var(--cre-transition);
+  background: transparent;
+}
+
+.cre-nav-link:hover {
+  color: var(--cre-text);
+  background: rgba(255, 255, 255, 0.03);
+  border-color: transparent !important;
+}
+
+.cre-nav-link.active {
+  color: var(--cre-blue) !important;
+  background: transparent !important;
+  border-bottom-color: var(--cre-blue) !important;
+}
+
+.cre-tab-sub {
+  font-weight: 400;
+  color: var(--cre-text-muted);
+  font-size: 0.78rem;
+}
+
+/* ============================================================
+   MODULE 2 INPUT CARD
+   ============================================================ */
+.cre-input-card--m2 {
+  border-top-color: var(--cre-orange);
+  box-shadow: 0 0 32px var(--cre-orange-glow);
+}
+
+.cre-module-desc {
+  font-size: 0.8rem;
+  color: var(--cre-text-muted);
+  line-height: 1.6;
+}
+
+/* Educational badge */
+.cre-edu-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--cre-orange-glow);
+  color: var(--cre-orange);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+/* Orange icon */
+.cre-icon-orange { color: var(--cre-orange); }
+
+/* ============================================================
+   SCENARIO SELECT
+   ============================================================ */
+.cre-select-wrap {
+  position: relative;
+  height: 100%;
+}
+
+.cre-select-icon {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cre-orange);
+  font-size: 0.9rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cre-select {
+  width: 100%;
+  height: 100%;
+  min-height: 46px;
+  background: var(--cre-surface-2);
+  border: 1px solid var(--cre-border);
+  border-radius: var(--cre-radius-sm);
+  color: var(--cre-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  padding: 0 0.75rem 0 2.4rem;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color var(--cre-transition), box-shadow var(--cre-transition);
+}
+
+.cre-select:focus {
+  outline: none;
+  border-color: var(--cre-orange);
+  box-shadow: 0 0 0 3px var(--cre-orange-glow);
+}
+
+.cre-select option {
+  background: var(--cre-surface-2);
+  color: var(--cre-text);
+}
+
+/* Orange primary button */
+.cre-btn-orange {
+  background: linear-gradient(135deg, var(--cre-orange-dark), var(--cre-orange));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  padding: 0.75rem 1.25rem;
+  white-space: nowrap;
+  transition: opacity var(--cre-transition), box-shadow var(--cre-transition), transform 0.1s ease;
+  border-radius: var(--cre-radius-sm);
+}
+
+.cre-btn-orange:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 4px 16px var(--cre-orange-glow);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.cre-btn-orange:active:not(:disabled) {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cre-btn-orange:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* M2 alert overrides */
+#assessAlertArea .alert {
+  background: rgba(239, 68, 68, 0.10);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--cre-radius-sm);
+  color: #fca5a5;
+  font-size: 0.875rem;
+  animation: cre-card-in 0.3s ease both;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+#assessAlertArea .alert-warning {
+  background: rgba(245, 158, 11, 0.10);
+  border-color: rgba(245, 158, 11, 0.30);
+  color: #fcd34d;
+}
+
+/* ============================================================
+   ASSESSMENT SUMMARY CARDS
+   ============================================================ */
+.cre-assess-card {
+  border-top: 2px solid transparent;
+}
+
+/* ============================================================
+   REPORT HEADER BAR
+   ============================================================ */
+.cre-report-header {
+  background: var(--cre-surface-2);
+  border: 1px solid var(--cre-border);
+  border-left: 3px solid var(--cre-orange);
+  border-radius: var(--cre-radius-sm);
+  padding: 0.9rem 1.25rem;
+  animation: cre-card-in 0.35s ease both;
+}
+
+.cre-report-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cre-text-muted);
+  margin-bottom: 0.2rem;
+}
+
+.cre-report-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--cre-text);
+}
+
+.cre-report-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--cre-border-light);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   FILTERS BAR
+   ============================================================ */
+.cre-filters {
+  background: var(--cre-surface);
+  border: 1px solid var(--cre-border);
+  border-radius: var(--cre-radius-sm);
+  padding: 0.6rem 1rem;
+}
+
+.cre-filters-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cre-text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cre-filter-btn-group {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.cre-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--cre-surface-2);
+  border: 1px solid var(--cre-border);
+  border-radius: 6px;
+  color: var(--cre-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: all var(--cre-transition);
+  letter-spacing: 0.03em;
+}
+
+.cre-filter-btn:hover,
+.cre-filter-btn.active {
+  color: var(--cre-text);
+  border-color: var(--cre-border-light);
+  background: var(--cre-surface);
+}
+
+.cre-filter-btn.active {
+  border-color: var(--cre-blue);
+  color: var(--cre-blue);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+}
+
+/* Coloured risk dots inside filter buttons */
+.cre-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.cre-dot-critical { background: #dc2626; }
+.cre-dot-high     { background: var(--cre-red); }
+.cre-dot-medium   { background: var(--cre-yellow); }
+.cre-dot-low      { background: var(--cre-green); }
+
+/* Search input */
+.cre-search-wrap {
+  position: relative;
+}
+
+.cre-search-icon {
+  position: absolute;
+  left: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cre-text-muted);
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+.cre-search-input {
+  background: var(--cre-surface-2);
+  border: 1px solid var(--cre-border);
+  border-radius: 6px;
+  color: var(--cre-text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem 0.35rem 2rem;
+  width: 180px;
+  transition: border-color var(--cre-transition), box-shadow var(--cre-transition);
+}
+
+.cre-search-input:focus {
+  outline: none;
+  border-color: var(--cre-blue);
+  box-shadow: 0 0 0 2px var(--cre-blue-glow);
+}
+
+.cre-search-input::placeholder {
+  color: var(--cre-text-muted);
+}
+
+/* ============================================================
+   FORCE-CONTRAST OVERRIDE
+   ============================================================ */
+.cre-table,
+.cre-table > :not(caption) > * > * {
+  background-color: transparent !important;
+  --bs-table-bg: transparent !important;
+  --bs-table-border-color: var(--cre-border) !important;
+  color: var(--cre-text) !important;
+}
+
+/* ============================================================
+   SERVICES TABLE & COLUMN WIDTHS / STYLING (MODULE 2)
+   ============================================================ */
+.cre-table-card {
+  overflow: hidden;
+}
+
+#servicesTable {
+  width: 100%;
+  min-width: 870px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  color: var(--cre-text);
+  font-size: 0.83rem;
+  margin: 0;
+}
+
+#servicesTable thead tr {
+  background: var(--cre-surface-2);
+  border-bottom: 1px solid var(--cre-border);
+}
+
+#servicesTable thead th {
+  color: #cbd5e1;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.65rem 0.85rem;
+  border: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#servicesTable tbody tr {
+  border-bottom: 1px solid var(--cre-border);
+  transition: background var(--cre-transition);
+}
+
+#servicesTable tbody tr:last-child {
+  border-bottom: none;
+}
+
+#servicesTable tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+#servicesTable tbody td {
+  padding: 0.65rem 0.85rem;
+  vertical-align: middle;
+  border: none;
+  overflow: hidden;
+  /* Force all cell text to be clearly visible */
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+/* ---- Fixed narrow columns ---- */
+#servicesTable th.col-port,
+#servicesTable td:nth-child(1)  { width: 62px;  min-width: 62px; }
+
+#servicesTable th.col-proto,
+#servicesTable td:nth-child(2)  { width: 82px;  min-width: 82px; }
+
+#servicesTable th.col-service,
+#servicesTable td:nth-child(3)  { width: 130px; min-width: 130px; }
+
+#servicesTable th.col-source,
+#servicesTable td:nth-child(4)  { width: 130px; min-width: 130px; }
+
+#servicesTable th.col-status,
+#servicesTable td:nth-child(5)  { width: 92px;  min-width: 92px; }
+
+/* ---- Flexible wide columns ---- */
+#servicesTable th.col-banner,
+#servicesTable td:nth-child(6)  {
+  min-width: 160px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+#servicesTable th.col-evidence,
+#servicesTable td:nth-child(7)  {
+  min-width: 200px;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ---- Port cell ---- */
+.cre-port {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cre-blue);
+  white-space: nowrap;
+}
+
+/* ---- Service name ---- */
+.cre-svc-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #f1f5f9;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* ---- Protocol pill ---- */
+.cre-proto {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(59,130,246,0.1);
+  border: 1px solid rgba(59,130,246,0.25);
+  color: #93c5fd;
+  white-space: nowrap;
+}
+
+/* ---- Source badge system ---- */
+.cre-src-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.cre-src-badge--port    { background: rgba(59,130,246,0.18);  color: #93c5fd; border: 1px solid rgba(59,130,246,0.35); }
+.cre-src-badge--banner  { background: rgba(34,197,94,0.15);   color: #86efac; border: 1px solid rgba(34,197,94,0.35); }
+.cre-src-badge--infer   { background: rgba(245,158,11,0.15);  color: #fcd34d; border: 1px solid rgba(245,158,11,0.35); }
+.cre-src-badge--default { background: rgba(100,116,139,0.15); color: #94a3b8; border: 1px solid rgba(100,116,139,0.3); }
+
+/* ---- Status pill ---- */
+.cre-status-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.cre-status-pill--open   { background: rgba(34,197,94,0.15);   color: #4ade80; border: 1px solid rgba(34,197,94,0.35); }
+.cre-status-pill--closed { background: rgba(100,116,139,0.12); color: #94a3b8; border: 1px solid rgba(100,116,139,0.28); }
+
+/* ---- Banner & evidence cells ---- */
+.cre-cell-banner,
+.cre-cell-evidence {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.cre-cell-dim {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-style: normal;
+}
+
+.cre-evidence-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.cre-banner-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #e2e8f0;
+}
+
+/* Status badges */
+.cre-status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.cre-status-open {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--cre-green);
+  border: 1px solid rgba(34, 197, 94, 0.30);
+}
+
+.cre-status-closed {
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--cre-text-muted);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+/* Risk level badges */
+.cre-risk-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.cre-risk-critical {
+  background: rgba(220, 38, 38, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(220, 38, 38, 0.35);
+}
+
+.cre-risk-high {
+  background: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.28);
+}
+
+.cre-risk-medium {
+  background: rgba(245, 158, 11, 0.14);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+
+.cre-risk-low {
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+/* Educational note cell */
+.cre-edu-note {
+  font-size: 0.78rem;
+  color: var(--cre-text-dim);
+  line-height: 1.5;
+  max-width: 380px;
+}
+
+/* Hidden row (filtered out) */
+.cre-row-hidden {
+  display: none;
+}
+
+/* Table footer */
+.cre-table-footer {
+  background: var(--cre-surface-2);
+  border-top: 1px solid var(--cre-border);
+}
+
+.cre-table-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cre-text-muted);
+  letter-spacing: 0.04em;
+}
+
+.cre-table-edu-note {
+  font-size: 0.72rem;
+  color: var(--cre-text-muted);
+  font-style: italic;
+}
+
+/* ============================================================
+   MODULE 2 RESPONSIVE TWEAKS
+   ============================================================ */
+@media (max-width: 768px) {
+  .cre-nav-link      { padding: 0.7rem 0.9rem; font-size: 0.78rem; }
+  .cre-tab-sub       { display: none; }
+  .cre-search-input  { width: 130px; }
+  .cre-edu-note      { max-width: 200px; }
+  .cre-report-divider { display: none; }
+}
+
+@media (max-width: 576px) {
+  .cre-filters       { flex-direction: column; align-items: flex-start !important; }
+  .cre-search-input  { width: 100%; }
+  .cre-search-wrap   { width: 100%; }
+}
+
+
+/* ==========================================================
+   MODULE 3 – Analysis & Security Reporting
+   ========================================================== */
+
+/* ---------- Additional design token ---------- */
+:root {
+  --cre-teal:      #14b8a6;
+  --cre-teal-glow: rgba(20, 184, 166, 0.22);
+  --cre-teal-dark: #0f766e;
+}
+
+/* Teal icon helper */
+.cre-icon-teal  { color: var(--cre-teal); }
+.cre-icon-red   { color: var(--cre-red); }
+
+/* ============================================================
+   TEAL BUTTON (Analyse & Report)
+   ============================================================ */
+.cre-btn-teal {
+  background: linear-gradient(135deg, var(--cre-teal-dark), var(--cre-teal));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  padding: 0.6rem 1.2rem;
+  white-space: nowrap;
+  border-radius: var(--cre-radius-sm);
+  transition: opacity var(--cre-transition), box-shadow var(--cre-transition), transform 0.1s ease;
+}
+
+.cre-btn-teal:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 4px 16px var(--cre-teal-glow);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.cre-btn-teal:active:not(:disabled) { transform: translateY(0); }
+.cre-btn-teal:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ============================================================
+   PLACEHOLDER CARD (M3 empty state)
+   ============================================================ */
+.cre-placeholder-card {
+  background: var(--cre-surface);
+  border: 1px dashed var(--cre-border-light);
+  border-radius: var(--cre-radius);
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.cre-placeholder-icon {
+  font-size: 3.5rem;
+  color: var(--cre-teal);
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.cre-placeholder-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--cre-text);
+  margin-bottom: 0.75rem;
+}
+
+.cre-placeholder-desc {
+  font-size: 0.875rem;
+  color: var(--cre-text-muted);
+  max-width: 480px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.7;
+}
+
+.text-teal {
+  color: var(--cre-teal) !important;
+}
+
+.cre-loading-card {
+  border-style: solid;
+  border-color: rgba(20, 184, 166, 0.35);
+  box-shadow: 0 0 32px rgba(20, 184, 166, 0.12);
+  animation: cre-pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes cre-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.08);
+  }
+  50% {
+    box-shadow: 0 0 36px rgba(20, 184, 166, 0.22);
+  }
+}
+
+.cre-radar-pulse {
+  font-size: 3.5rem;
+  color: var(--cre-teal);
+  animation: cre-radar-spin 3s linear infinite;
+  display: inline-block;
+}
+
+@keyframes cre-radar-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   M3 HEADER BAR
+   ============================================================ */
+.cre-m3-header {
+  background: var(--cre-surface-2);
+  border: 1px solid var(--cre-border);
+  border-left: 3px solid var(--cre-teal);
+  border-radius: var(--cre-radius-sm);
+  padding: 1rem 1.25rem;
+  animation: cre-card-in 0.35s ease both;
+}
+
+.cre-m3-module-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cre-teal);
+  margin-bottom: 0.35rem;
+}
+
+/* ============================================================
+   DOWNLOAD BUTTONS
+   ============================================================ */
+.cre-btn-dl {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 1rem;
+  border-radius: var(--cre-radius-sm);
+  border: 1px solid transparent;
+  transition: all var(--cre-transition);
+  white-space: nowrap;
+}
+
+.cre-btn-dl--txt {
+  background: rgba(100, 116, 139, 0.15);
+  border-color: rgba(100, 116, 139, 0.30);
+  color: var(--cre-text-dim);
+}
+
+.cre-btn-dl--txt:hover {
+  background: rgba(100, 116, 139, 0.25);
+  color: var(--cre-text);
+  border-color: var(--cre-border-light);
+}
+
+.cre-btn-dl--json {
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(20, 184, 166, 0.30);
+  color: var(--cre-teal);
+}
+
+.cre-btn-dl--json:hover {
+  background: rgba(20, 184, 166, 0.22);
+  color: var(--cre-teal);
+  border-color: var(--cre-teal);
+}
+
+/* ============================================================
+   RISK SCORE GAUGE CARD
+   ============================================================ */
+.cre-m3-risk-card {
+  border-top: 2px solid var(--cre-teal);
+}
+
+.cre-risk-score-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+}
+
+.cre-risk-score-num {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--cre-text);
+  font-family: 'JetBrains Mono', monospace;
+  transition: color 0.4s ease;
+}
+
+.cre-risk-score-denom {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--cre-text-muted);
+}
+
+.cre-risk-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+/* risk label colours */
+.cre-risk-label--critical { background: rgba(220, 38, 38, 0.18);  color: #f87171; border: 1px solid rgba(220,38,38,.35); }
+.cre-risk-label--high     { background: rgba(239, 68, 68, 0.14);  color: #fca5a5; border: 1px solid rgba(239,68,68,.28); }
+.cre-risk-label--medium   { background: rgba(245,158,11, 0.14);   color: #fcd34d; border: 1px solid rgba(245,158,11,.28); }
+.cre-risk-label--low      { background: rgba(34, 197, 94, 0.12);  color: #86efac; border: 1px solid rgba(34,197,94,.25); }
+
+/* gauge bar */
+.cre-gauge-wrap {
+  padding: 0 0.25rem;
+}
+
+.cre-gauge-bar {
+  height: 8px;
+  background: var(--cre-surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--cre-border);
+}
+
+.cre-gauge-bar .progress-bar {
+  border-radius: 999px;
+  transition: width 0.8s ease, background-color 0.4s ease;
+}
+
+/* gauge bar colour by score range */
+.cre-gauge-bar .progress-bar.score-critical { background: linear-gradient(90deg, #991b1b, #dc2626); }
+.cre-gauge-bar .progress-bar.score-high     { background: linear-gradient(90deg, #b91c1c, #ef4444); }
+.cre-gauge-bar .progress-bar.score-medium   { background: linear-gradient(90deg, #b45309, #f59e0b); }
+.cre-gauge-bar .progress-bar.score-low      { background: linear-gradient(90deg, #15803d, #22c55e); }
+
+.cre-gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  color: var(--cre-text-muted);
+  margin-top: 3px;
+}
+
+/* ============================================================
+   RISK DISTRIBUTION BARS
+   ============================================================ */
+.cre-dist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.cre-dist-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cre-dist-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  width: 60px;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cre-dist-bar-wrap {
+  flex: 1;
+  background: var(--cre-surface-2);
+  border-radius: 999px;
+  height: 7px;
+  overflow: hidden;
+  border: 1px solid var(--cre-border);
+}
+
+.cre-dist-bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.7s ease;
+}
+
+.cre-dist-bar--critical { background: #dc2626; }
+.cre-dist-bar--high     { background: var(--cre-red); }
+.cre-dist-bar--medium   { background: var(--cre-yellow); }
+.cre-dist-bar--low      { background: var(--cre-green); }
+
+.cre-dist-count {
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+  color: var(--cre-text-dim);
+}
+
+/* ============================================================
+   STATS LIST
+   ============================================================ */
+.cre-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cre-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--cre-border);
+  font-size: 0.82rem;
+}
+
+.cre-stat-row:last-child { border-bottom: none; }
+
+.cre-stat-label {
+  color: var(--cre-text-dim);
+  display: flex;
+  align-items: center;
+}
+
+.cre-stat-val {
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  color: var(--cre-text);
+}
+
+/* ============================================================
+   EXECUTIVE SUMMARY CARD
+   ============================================================ */
+.cre-exec-card {
+  border-left: 3px solid var(--cre-teal);
+}
+
+.cre-exec-text {
+  font-size: 0.875rem;
+  color: var(--cre-text-dim);
+  line-height: 1.8;
+}
+
+/* ============================================================
+   FINDINGS TABLE EXTRAS
+   ============================================================ */
+.cre-finding-desc {
+  font-size: 0.78rem;
+  color: var(--cre-text-dim);
+  line-height: 1.5;
+  max-width: 260px;
+}
+
+.cre-finding-rec {
+  font-size: 0.78rem;
+  color: var(--cre-text-dim);
+  line-height: 1.5;
+  max-width: 260px;
+}
+
+.cre-finding-ref {
+  font-size: 0.72rem;
+  color: var(--cre-blue);
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  word-break: break-all;
+}
+
+.cre-finding-ref:hover {
+  color: var(--cre-teal);
+  text-decoration: underline;
+}
+
+.cre-finding-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--cre-text-muted);
+}
+
+/* Hidden findings row */
+.cre-finding-hidden { display: none; }
+
+/* ============================================================
+   MODULE 3 RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .cre-risk-score-num   { font-size: 2.5rem; }
+  .cre-m3-header        { flex-direction: column; align-items: flex-start !important; }
+  .cre-finding-desc,
+  .cre-finding-rec      { max-width: 160px; }
+}
+
+@media (max-width: 576px) {
+  .cre-placeholder-card { padding: 2rem 1rem; }
+  .cre-btn-dl           { font-size: 0.72rem; padding: 0.4rem 0.75rem; }
+}
+
+
+/* ============================================================
+   MODULE 1 — NEW DNS RECORD PANELS
+   ============================================================ */
+
+/* IPv6 inline tag */
+.cre-tag-ipv6 {
+  display: inline-block;
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(168, 85, 247, 0.15);
+  color: var(--cre-purple);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* TXT record — wrappable text block */
+.cre-txt-item {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.cre-txt-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  word-break: break-all;
+  color: var(--cre-text-dim);
+  flex: 1;
+}
+
+/* SOA / RDAP key-value grid */
+.cre-soa-grid {
+  display: grid;
+  gap: 0.4rem 0;
+}
+.cre-soa-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid var(--cre-border);
+  font-size: 0.83rem;
+}
+.cre-soa-row:last-child { border-bottom: none; }
+.cre-soa-label {
+  min-width: 130px;
+  flex-shrink: 0;
+  color: var(--cre-text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   MODULE 2 — AUTHORIZATION GATE
+   ============================================================ */
+
+/* Notice bar at top of M2 input card */
+.cre-auth-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(59, 130, 246, 0.07);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--cre-radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.82rem;
+  color: var(--cre-text-dim);
+}
+
+/* Allowed targets inline pill display */
+.cre-allowed-targets {
+  color: var(--cre-green);
+  font-size: 0.8rem;
+}
+
+/* Disclaimer warning (shown only for live-scan targets) */
+.cre-auth-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--cre-radius-sm);
+  padding: 0.65rem 0.9rem;
+  font-size: 0.82rem;
+  color: #fca5a5;
+  margin-bottom: 0.75rem;
+}
+
+/* Authorization checkbox wrapper */
+.cre-auth-checkbox-wrap {
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  border-radius: var(--cre-radius-sm);
+  padding: 0.65rem 0.9rem;
+  margin-top: 0.5rem;
+}
+.cre-auth-check .form-check-input {
+  border-color: rgba(34, 197, 94, 0.4);
+  background-color: transparent;
+  cursor: pointer;
+}
+.cre-auth-check .form-check-input:checked {
+  background-color: var(--cre-green);
+  border-color: var(--cre-green);
+}
+.cre-auth-check-label {
+  font-size: 0.83rem;
+  color: var(--cre-text-dim);
+  cursor: pointer;
+}
+.cre-required-tag {
+  display: inline-block;
+  font-size: 0.68rem;
+  padding: 1px 6px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* ---- Scan type badges in M2 report header ---- */
+.cre-live-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+.cre-sim-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(100, 116, 139, 0.15);
+  color: var(--cre-text-muted);
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+/* Banner grab pill in M2 services table and M3 findings table */
+.cre-banner-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border-radius: 4px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+
+/* ============================================================
+   MODULE 3 — OSV / DATA-SOURCE BADGES
+   ============================================================ */
+
+.cre-osv-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(20, 184, 166, 0.12);
+  color: #14b8a6;
+  border: 1px solid rgba(20, 184, 166, 0.25);
+  white-space: nowrap;
+}
+.cre-local-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--cre-text-muted);
+  border: 1px solid rgba(100, 116, 139, 0.2);
+  white-space: nowrap;
+}
+
+
+

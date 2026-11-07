@@ -1,0 +1,256 @@
+{
+  "scenarios": [
+    {
+      "id": "lab-web-server",
+      "label": "Authorised Lab – Web Server",
+      "services": [
+        {
+          "port": 21,
+          "service_name": "FTP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "high",
+          "educational_note": "File Transfer Protocol transmits credentials in cleartext. It should be replaced with SFTP or FTPS in any production environment."
+        },
+        {
+          "port": 22,
+          "service_name": "SSH",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "Secure Shell provides encrypted remote access. Ensure key-based authentication is enforced and password login is disabled."
+        },
+        {
+          "port": 23,
+          "service_name": "Telnet",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "critical",
+          "educational_note": "Telnet sends all data—including passwords—as plaintext. It is considered obsolete and must never be used on any network."
+        },
+        {
+          "port": 25,
+          "service_name": "SMTP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "Simple Mail Transfer Protocol is used to send email. Open relays are a common attack vector; always require authentication."
+        },
+        {
+          "port": 53,
+          "service_name": "DNS",
+          "protocol": "UDP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "Domain Name System translates hostnames to IPs. Misconfigured DNS servers can expose zone-transfer data or be abused for amplification attacks."
+        },
+        {
+          "port": 80,
+          "service_name": "HTTP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "Hypertext Transfer Protocol serves web content without encryption. All production traffic should be redirected to HTTPS (port 443)."
+        },
+        {
+          "port": 110,
+          "service_name": "POP3",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "low",
+          "educational_note": "Post Office Protocol 3 retrieves email. The unencrypted version on port 110 should be disabled in favour of POP3S on port 995."
+        },
+        {
+          "port": 135,
+          "service_name": "RPC",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "high",
+          "educational_note": "Microsoft Remote Procedure Call has historically been exploited (e.g., MS03-026). It should be blocked at the network perimeter."
+        },
+        {
+          "port": 139,
+          "service_name": "NetBIOS",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "high",
+          "educational_note": "NetBIOS Session Service exposes Windows name resolution data. It should be disabled externally and replaced with DNS."
+        },
+        {
+          "port": 143,
+          "service_name": "IMAP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "low",
+          "educational_note": "Internet Message Access Protocol allows email synchronisation. Use IMAPS (port 993) with TLS to protect credentials in transit."
+        },
+        {
+          "port": 443,
+          "service_name": "HTTPS",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "low",
+          "educational_note": "HTTPS uses TLS to encrypt web traffic. Ensure TLS 1.2+ is enforced, weak cipher suites are disabled, and certificates are valid."
+        },
+        {
+          "port": 445,
+          "service_name": "SMB",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "critical",
+          "educational_note": "Server Message Block was exploited by EternalBlue (WannaCry). Port 445 must never be exposed to the internet."
+        },
+        {
+          "port": 3306,
+          "service_name": "MySQL",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "high",
+          "educational_note": "MySQL database port. Database servers should only listen on loopback or a dedicated private interface, never on a public IP."
+        },
+        {
+          "port": 3389,
+          "service_name": "RDP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "critical",
+          "educational_note": "Remote Desktop Protocol is a prime target for brute-force and BlueKeep-style exploits. Restrict it to a VPN or specific IP allowlist."
+        },
+        {
+          "port": 5432,
+          "service_name": "PostgreSQL",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "high",
+          "educational_note": "PostgreSQL database port. Like MySQL, it should never be internet-facing; use a firewall rule or bind only to 127.0.0.1."
+        },
+        {
+          "port": 5900,
+          "service_name": "VNC",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "high",
+          "educational_note": "Virtual Network Computing provides remote desktop access. Many VNC implementations have weak or no authentication by default."
+        },
+        {
+          "port": 6379,
+          "service_name": "Redis",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "critical",
+          "educational_note": "Redis has no authentication by default and can be used to write files to disk. Never expose it publicly without AUTH and TLS."
+        },
+        {
+          "port": 8080,
+          "service_name": "HTTP-Alt",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "Alternate HTTP port commonly used for development servers and proxies. Ensure it is not leaking internal application details."
+        },
+        {
+          "port": 8443,
+          "service_name": "HTTPS-Alt",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "low",
+          "educational_note": "Alternate HTTPS port. Verify TLS configuration is as rigorous as the primary HTTPS service."
+        },
+        {
+          "port": 27017,
+          "service_name": "MongoDB",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "critical",
+          "educational_note": "MongoDB's default port has historically been exposed without authentication, leading to mass data breaches. Always require auth and bind to loopback."
+        }
+      ]
+    },
+    {
+      "id": "lab-mail-server",
+      "label": "Authorised Lab – Mail Server",
+      "services": [
+        {
+          "port": 25,
+          "service_name": "SMTP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "SMTP is the core mail-transfer protocol. Ensure SPF, DKIM, and DMARC records are configured to prevent email spoofing."
+        },
+        {
+          "port": 110,
+          "service_name": "POP3",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "high",
+          "educational_note": "Unencrypted POP3 exposes email credentials. Migrate users to POP3S (995) or IMAP with STARTTLS."
+        },
+        {
+          "port": 143,
+          "service_name": "IMAP",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "medium",
+          "educational_note": "IMAP on port 143 should enforce STARTTLS. Prefer IMAPS (993) for mandatory TLS from connection start."
+        },
+        {
+          "port": 465,
+          "service_name": "SMTPS",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "low",
+          "educational_note": "SMTP over SSL/TLS (implicit TLS). This is the preferred method for mail submission from email clients."
+        },
+        {
+          "port": 587,
+          "service_name": "SMTP-Submit",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "low",
+          "educational_note": "Mail Submission Agent port. Enforce STARTTLS and require SASL authentication on this port."
+        },
+        {
+          "port": 993,
+          "service_name": "IMAPS",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "low",
+          "educational_note": "IMAP over TLS provides encrypted email synchronisation. Verify the TLS certificate and cipher suite configuration."
+        },
+        {
+          "port": 995,
+          "service_name": "POP3S",
+          "protocol": "TCP",
+          "status": "open",
+          "risk_level": "low",
+          "educational_note": "POP3 over TLS. Acceptable if users prefer POP3, but IMAPS offers more flexibility for multi-device access."
+        },
+        {
+          "port": 2525,
+          "service_name": "SMTP-Alt",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "low",
+          "educational_note": "Alternative SMTP port sometimes used when port 25 is blocked by ISPs. Less commonly targeted but should still enforce TLS."
+        },
+        {
+          "port": 4190,
+          "service_name": "ManageSieve",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "low",
+          "educational_note": "Sieve script management port. If not in use, disable it; if active, require TLS and strong authentication."
+        },
+        {
+          "port": 8025,
+          "service_name": "SpamAssassin",
+          "protocol": "TCP",
+          "status": "closed",
+          "risk_level": "medium",
+          "educational_note": "SpamAssassin's spamd interface. Bind to loopback only and verify no unauthenticated external access is possible."
+        }
+      ]
+    }
+  ]
+}
